@@ -1,7 +1,6 @@
 package se.sofia;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class MyFrame extends JFrame {
     JTextArea textArea;
@@ -10,7 +9,8 @@ public class MyFrame extends JFrame {
     FileFunctions fileFunctions = new FileFunctions(this);
     EditFunctions editFunctions = new EditFunctions(this);
     FormatFunctions formatFunctions = new FormatFunctions(this);
-    JMenuBar menuBar = new MenuBar(this, fileFunctions, editFunctions, formatFunctions).createMenuBar();
+    ColorFunctions colorFunctions = new ColorFunctions(this);
+    JMenuBar menuBar = new MenuBar(this, fileFunctions, editFunctions, formatFunctions, colorFunctions).createMenuBar();
 
     public MyFrame() {
         createWindow();
@@ -37,7 +37,6 @@ public class MyFrame extends JFrame {
         textArea.setWrapStyleWord(true);
         formatFunctions.selectedFont = "Arial";
         formatFunctions.createFont(16);
-        //textArea.setFont(new Font("Arial", Font.PLAIN, 16));
 
         this.add(scrollPane);
     }

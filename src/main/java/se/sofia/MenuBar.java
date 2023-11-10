@@ -16,11 +16,14 @@ public class MenuBar implements ActionListener {
     FormatFunctions format;
     ColorMenu colorMenu;
 
-    public MenuBar(MyFrame myFrame, FileFunctions file, EditFunctions edit, FormatFunctions format) {
+    ColorFunctions color;
+
+    public MenuBar(MyFrame myFrame, FileFunctions file, EditFunctions edit, FormatFunctions format, ColorFunctions color) {
         this.myFrame = myFrame;
         this.file = file;
         this.edit = edit;
         this.format = format;
+        this.color = color;
     }
 
     public JMenuBar createMenuBar() {

@@ -48,33 +48,37 @@ public class FileFunctions {
     }
 
     public void save() {
-
-        if(fileName==null) {
+        if (fileName == null) {
             saveAs();
-        }else {
-            try{
+        } else {
+            try {
+                if (!fileName.endsWith(".txt")) {
+                    fileName += ".txt";
+                }
                 FileWriter fileWriter = new FileWriter(fileAddress + fileName);
                 fileWriter.write(frame.textArea.getText());
-                frame.setTitle(fileName);
+                frame.setTitle(removeFileExtension(fileName));
                 fileWriter.close();
-            }catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Something went wrong");
             }
         }
-
     }
 
     public void saveAs() {
         FileDialog fileDialog = new FileDialog(frame, "Save", FileDialog.SAVE);
         fileDialog.setVisible(true);
 
-        if(fileDialog.getFile()!=null){
+        if (fileDialog.getFile() != null) {
             fileName = fileDialog.getFile();
+            if (!fileName.endsWith(".txt")) {
+                fileName += ".txt";
+            }
             fileAddress = fileDialog.getDirectory();
-            frame.setTitle(fileName);
+            frame.setTitle(removeFileExtension(fileName));
         }
 
-        try{
+        try {
             FileWriter fileWriter = new FileWriter(fileAddress + fileName);
             fileWriter.write(frame.textArea.getText());
             fileWriter.close();
@@ -83,7 +87,16 @@ public class FileFunctions {
         }
     }
 
+
     public void exit() {
         System.exit(0);
+    }
+
+    private String removeFileExtension(String fileName) {
+        int lastDotIndex = fileName.lastIndexOf('.');
+        if (lastDotIndex != -1) {
+            return fileName.substring(0, lastDotIndex);
+        }
+        return fileName;
     }
 }
