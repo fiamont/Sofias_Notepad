@@ -22,25 +22,29 @@ public class ColorMenu {
     public JMenu createMenu() {
         JMenu colorMenu = new JMenu("Color");
 
-        JMenu cBackground = createUnderMenu("Background", "Background", actionListener);
+        JMenu cBackground = createUnderMenu("Background", "Background");
         JMenuItem cBlack = createMenuItem("Black", "Black", actionListener);
         JMenuItem cWhite = createMenuItem("White", "White", actionListener);
         JMenuItem cBlue = createMenuItem("Blue", "Blue", actionListener);
         JMenuItem cRed = createMenuItem("Red", "Red", actionListener);
+        JMenuItem cCustom = createMenuItem("Custom", "Custom", actionListener);
         cBackground.add(cBlack);
         cBackground.add(cWhite);
         cBackground.add(cBlue);
         cBackground.add(cRed);
+        cBackground.add(cCustom);
 
-        JMenu cFontColor = createUnderMenu("Font Color", "Font Size", actionListener);
-        JMenuItem ccBlack = createMenuItem("Black", "cBlack", actionListener);
-        JMenuItem ccWhite = createMenuItem("White", "cWhite", actionListener);
-        JMenuItem ccBlue = createMenuItem("Blue", "cBlue", actionListener);
-        JMenuItem ccRed = createMenuItem("Red", "cRed", actionListener);
-        cFontColor.add(ccBlack);
-        cFontColor.add(ccWhite);
-        cFontColor.add(ccBlue);
-        cFontColor.add(ccRed);
+        JMenu cFontColor = createUnderMenu("Font Color", "Font Color");
+        JMenuItem fBlack = createMenuItem("Black", "fBlack", actionListener);
+        JMenuItem fWhite = createMenuItem("White", "fWhite", actionListener);
+        JMenuItem fBlue = createMenuItem("Blue", "fBlue", actionListener);
+        JMenuItem fRed = createMenuItem("Red", "fRed", actionListener);
+        JMenuItem fCustom = createMenuItem("Custom", "fCustom", actionListener);
+        cFontColor.add(fBlack);
+        cFontColor.add(fWhite);
+        cFontColor.add(fBlue);
+        cFontColor.add(fRed);
+        cFontColor.add(fCustom);
 
         colorMenu.setForeground(fColor);
         colorMenu.setFont(headerFont);
@@ -51,11 +55,10 @@ public class ColorMenu {
         return colorMenu;
     }
 
-    private JMenu createUnderMenu(String label, String command, ActionListener actionListener) {
+    private JMenu createUnderMenu(String label, String command) {
         JMenu menu = new JMenu(label);
         menu.setBackground(bColor);
         menu.setFont(f);
-        menu.addActionListener(actionListener);
         menu.setActionCommand(command);
         return menu;
     }

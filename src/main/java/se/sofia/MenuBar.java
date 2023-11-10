@@ -56,17 +56,15 @@ public class MenuBar implements ActionListener {
             case "Exit" -> file.exit();
             case "Undo" -> edit.makeUndo();
             case "Redo" -> edit.makeRedo();
-            case "Arial" -> format.changeFont("Arial");
-            case "Calibri" -> format.changeFont("Calibri");
-            case "Elephant" -> format.changeFont("Elephant");
-            case "Monospaced" -> format.changeFont("Monospaced");
-            case "Times New Roman" -> format.changeFont("Times New Roman");
+            case "Arial", "Calibri", "Elephant", "Monospaced", "Times New Roman" -> format.changeFont(command);
             case "8" -> format.createFont(8);
             case "12" -> format.createFont(12);
             case "16" -> format.createFont(16);
             case "20" -> format.createFont(20);
             case "28" -> format.createFont(28);
             case "38" -> format.createFont(38);
+            case "Black", "White", "Blue", "Red", "Custom" -> color.changeBackground(command);
+            case "fBlack", "fWhite", "fBlue", "fRed", "fCustom" -> color.changeForeground(command);
 
 
         }

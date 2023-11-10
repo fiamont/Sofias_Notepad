@@ -37,6 +37,8 @@ public class MyFrame extends JFrame {
         textArea.setWrapStyleWord(true);
         formatFunctions.selectedFont = "Arial";
         formatFunctions.createFont(16);
+        colorFunctions.changeBackground("White");
+        colorFunctions.changeForeground("fBlack");
 
         this.add(scrollPane);
     }
