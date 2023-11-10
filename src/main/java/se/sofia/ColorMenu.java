@@ -8,9 +8,11 @@ public class ColorMenu {
     MyFrame frame;
     ActionListener actionListener;
 
-    Font f = new Font("Arial Rounded MT Bold", Font.BOLD, 16);
+    Font headerFont = new Font("Arial Rounded MT Bold", Font.BOLD, 18);
+    Font f = new Font("Arial Rounded MT Bold", Font.PLAIN, 16);
     Color fColor = Color.WHITE;
     Color bColor = new Color(9, 86, 141);
+    Color subMenuColor = new Color(9, 138, 162);
 
     public ColorMenu(MyFrame frame, ActionListener actionListener) {
         this.frame = frame;
@@ -41,7 +43,7 @@ public class ColorMenu {
         cFontColor.add(ccRed);
 
         colorMenu.setForeground(fColor);
-        colorMenu.setFont(f);
+        colorMenu.setFont(headerFont);
 
         colorMenu.add(cBackground);
         colorMenu.add(cFontColor);
@@ -60,7 +62,7 @@ public class ColorMenu {
 
     private JMenuItem createMenuItem(String label, String command, ActionListener actionListener) {
         JMenuItem item = new JMenuItem(label);
-        item.setBackground(bColor);
+        item.setBackground(subMenuColor);
         item.setForeground(fColor);
         item.setFont(f);
         item.addActionListener(actionListener);

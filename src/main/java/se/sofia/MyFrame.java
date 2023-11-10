@@ -1,13 +1,16 @@
 package se.sofia;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class MyFrame extends JFrame {
     JTextArea textArea;
     JScrollPane scrollPane;
 
     FileFunctions fileFunctions = new FileFunctions(this);
-    JMenuBar menuBar = new MenuBar(this, fileFunctions).createMenuBar();
+    EditFunctions editFunctions = new EditFunctions(this);
+    FormatFunctions formatFunctions = new FormatFunctions(this);
+    JMenuBar menuBar = new MenuBar(this, fileFunctions, editFunctions, formatFunctions).createMenuBar();
 
     public MyFrame() {
         createWindow();
@@ -30,6 +33,12 @@ public class MyFrame extends JFrame {
         textArea = new JTextArea();
         scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        formatFunctions.selectedFont = "Arial";
+        formatFunctions.createFont(16);
+        //textArea.setFont(new Font("Arial", Font.PLAIN, 16));
+
         this.add(scrollPane);
     }
 }

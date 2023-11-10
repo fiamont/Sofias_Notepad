@@ -7,7 +7,8 @@ import java.awt.event.ActionListener;
 public class EditMenu {
     MyFrame frame;
     ActionListener actionListener;
-    Font f = new Font("Arial Rounded MT Bold", Font.BOLD, 16);
+    Font headerFont = new Font("Arial Rounded MT Bold", Font.BOLD, 18);
+    Font f = new Font("Arial Rounded MT Bold", Font.PLAIN, 16);
     Color fColor = Color.WHITE;
 
     public EditMenu(MyFrame frame, ActionListener actionListener) {
@@ -22,7 +23,7 @@ public class EditMenu {
 
 
         editMenu.setForeground(fColor);
-        editMenu.setFont(f);
+        editMenu.setFont(headerFont);
 
         editMenu.add(iUndo);
         editMenu.add(iRedo);

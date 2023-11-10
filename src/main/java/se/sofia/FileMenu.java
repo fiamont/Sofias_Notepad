@@ -7,7 +7,8 @@ import java.awt.event.ActionListener;
 public class FileMenu {
     MyFrame frame;
     ActionListener actionListener;
-    Font f = new Font("Arial Rounded MT Bold", Font.BOLD, 16);
+    Font headerFont = new Font("Arial Rounded MT Bold", Font.BOLD, 18);
+    Font f = new Font("Arial Rounded MT Bold", Font.PLAIN, 16);
     Color fColor = Color.WHITE;
     public FileMenu(MyFrame frame, ActionListener actionListener) {
         this.frame = frame;
@@ -23,7 +24,7 @@ public class FileMenu {
         JMenuItem iExit = createMenuItem("Exit", "Exit", actionListener);
 
         fileMenu.setForeground(fColor);
-        fileMenu.setFont(f);
+        fileMenu.setFont(headerFont);
 
         fileMenu.add(iNew);
         fileMenu.add(iOpen);
