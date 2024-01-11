@@ -1,9 +1,9 @@
 package se.sofia;
 
+import javax.swing.*;
+import javax.swing.text.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 
 public class FileFunctions {
 
@@ -16,34 +16,52 @@ public class FileFunctions {
     }
 
     public void createNewFile() {
-        frame.textArea.setText("");
+        frame.textPane.setText("");
         frame.setTitle("New notes");
         fileName = null;
         fileAddress = null;
+        setDefaultStyles();
     }
 
     public void openFile() {
-        FileDialog fileDialog = new FileDialog(frame, "Open", FileDialog.LOAD);
-        fileDialog.setVisible(true);
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(frame);
 
-        if(fileDialog.getFile()!=null){
-            fileName = fileDialog.getFile();
-            fileAddress = fileDialog.getDirectory();
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            fileName = file.getName();
+            fileAddress = file.getAbsolutePath();
             frame.setTitle(fileName);
-        }
 
-        try{
-            BufferedReader br = new BufferedReader(new FileReader(fileAddress + fileName));
-            frame.textArea.setText((""));
+            try (FileReader fileReader = new FileReader(file);
+                 BufferedReader br = new BufferedReader(fileReader)) {
 
-            String line;
+                StyledDocument doc = frame.textPane.getStyledDocument();
+                doc.remove(0, doc.getLength());  // Clear existing content
 
-            while ((line = br.readLine())!=null) {
-                frame.textArea.append(line + "\n");
+                // Read the font information from the first line
+                String fontInfo = br.readLine();
+                if (fontInfo != null && fontInfo.startsWith("Font:")) {
+                    String[] parts = fontInfo.split("\\s");
+                    if (parts.length >= 3) {
+                        String fontFamily = parts[1];
+                        int fontSize = Integer.parseInt(parts[2]);
+                        changeFont(doc, fontFamily, fontSize);
+                    }
+                }
+
+                String line;
+                while ((line = br.readLine()) != null) {
+                    doc.insertString(doc.getLength(), line + "\n", null);
+                }
+
+                // Reset styles
+                setDefaultStyles();
+
+            } catch (IOException | BadLocationException e) {
+                e.printStackTrace();
+                System.out.println("Error reading file.");
             }
-            br.close();
-        } catch (Exception e){
-            System.out.println("File not open");
         }
     }
 
@@ -55,38 +73,48 @@ public class FileFunctions {
                 if (!fileName.endsWith(".txt")) {
                     fileName += ".txt";
                 }
+
                 FileWriter fileWriter = new FileWriter(fileAddress + fileName);
-                fileWriter.write(frame.textArea.getText());
-                frame.setTitle(removeFileExtension(fileName));
+                // Save font information as the first line
+                Font currentFont = frame.textPane.getFont();
+                fileWriter.write(String.format("Font: %s %d\n", currentFont.getFamily(), currentFont.getSize()));
+                fileWriter.write(getDocumentText());
                 fileWriter.close();
-            } catch (Exception e) {
-                System.out.println("Something went wrong");
+                frame.setTitle(removeFileExtension(fileName));
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error saving file.");
             }
         }
     }
 
     public void saveAs() {
-        FileDialog fileDialog = new FileDialog(frame, "Save", FileDialog.SAVE);
-        fileDialog.setVisible(true);
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showSaveDialog(frame);
 
-        if (fileDialog.getFile() != null) {
-            fileName = fileDialog.getFile();
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            fileName = file.getName();
             if (!fileName.endsWith(".txt")) {
                 fileName += ".txt";
             }
-            fileAddress = fileDialog.getDirectory();
+            fileAddress = file.getAbsolutePath();
             frame.setTitle(removeFileExtension(fileName));
-        }
 
-        try {
-            FileWriter fileWriter = new FileWriter(fileAddress + fileName);
-            fileWriter.write(frame.textArea.getText());
-            fileWriter.close();
-        } catch (Exception e) {
-            System.out.println("Something went wrong");
+            try (FileWriter fileWriter = new FileWriter(fileAddress + fileName)) {
+                // Save font information as the first line
+                Font currentFont = frame.textPane.getFont();
+                fileWriter.write(String.format("Font: %s %d\n", currentFont.getFamily(), currentFont.getSize()));
+                fileWriter.write(getDocumentText());
+                fileWriter.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error saving file.");
+            }
         }
     }
-
 
     public void exit() {
         System.exit(0);
@@ -98,5 +126,26 @@ public class FileFunctions {
             return fileName.substring(0, lastDotIndex);
         }
         return fileName;
+    }
+
+    private String getDocumentText() {
+        try {
+            return frame.textPane.getStyledDocument().getText(0, frame.textPane.getStyledDocument().getLength());
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    private void setDefaultStyles() {
+        StyledDocument doc = frame.textPane.getStyledDocument();
+        doc.setCharacterAttributes(0, doc.getLength(), frame.textPane.getStyle("default"), true);
+    }
+
+    private void changeFont(StyledDocument doc, String fontFamily, int fontSize) {
+        MutableAttributeSet attrs = new SimpleAttributeSet();
+        StyleConstants.setFontFamily(attrs, fontFamily);
+        StyleConstants.setFontSize(attrs, fontSize);
+        doc.setCharacterAttributes(0, doc.getLength(), attrs, false);
     }
 }

@@ -1,5 +1,6 @@
 package se.sofia;
 
+import javax.swing.text.*;
 import java.awt.*;
 
 public class FormatFunctions {
@@ -24,15 +25,27 @@ public class FormatFunctions {
 
     public void changeFont(String font) {
         selectedFont = font;
-        switch (selectedFont) {
-            case "Arial" -> frame.textArea.setFont(arial);
-            case "Calibri" -> frame.textArea.setFont(calibri);
-            case "Elephant" -> frame.textArea.setFont(elephant);
-            case "Monospaced" -> frame.textArea.setFont(monospaced);
-            case "Times New Roman" -> frame.textArea.setFont(timesNewRoman);
+        StyledDocument doc = frame.textPane.getStyledDocument();  // Change this line
 
+        // Clear existing styles
+        doc.setCharacterAttributes(0, doc.getLength(), frame.textPane.getStyle("default"), true);
+        switch (selectedFont) {
+            case "Arial" -> setFont(doc, arial);
+            case "Calibri" -> setFont(doc, calibri);
+            case "Elephant" -> setFont(doc, elephant);
+            case "Monospaced" -> setFont(doc, monospaced);
+            case "Times New Roman" -> setFont(doc, timesNewRoman);
         }
     }
+
+    private void setFont(StyledDocument doc, Font font) {
+        MutableAttributeSet attrs = new SimpleAttributeSet();
+        StyleConstants.setFontFamily(attrs, font.getFamily());
+        StyleConstants.setFontSize(attrs, font.getSize());
+
+        doc.setCharacterAttributes(0, doc.getLength(), attrs, false);
+    }
+
 
 
 }

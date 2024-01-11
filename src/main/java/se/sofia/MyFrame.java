@@ -1,9 +1,10 @@
 package se.sofia;
 
 import javax.swing.*;
+import javax.swing.text.DefaultStyledDocument;
 
 public class MyFrame extends JFrame {
-    JTextArea textArea;
+    JTextPane textPane;
     JScrollPane scrollPane;
 
     FileFunctions fileFunctions = new FileFunctions(this);
@@ -30,11 +31,10 @@ public class MyFrame extends JFrame {
     }
 
     public void createTextArea() {
-        textArea = new JTextArea();
-        scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        textPane = new JTextPane(new DefaultStyledDocument());  // Change this line
+        scrollPane = new JScrollPane(textPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        textArea.setLineWrap(true);
-        textArea.setWrapStyleWord(true);
+        textPane.setStyledDocument(new DefaultStyledDocument());  // Add this line
         formatFunctions.selectedFont = "Arial";
         formatFunctions.createFont(16);
         colorFunctions.changeBackground("White");

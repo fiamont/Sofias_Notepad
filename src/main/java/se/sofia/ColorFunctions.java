@@ -1,6 +1,9 @@
 package se.sofia;
 
 import javax.swing.*;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 
 public class ColorFunctions {
@@ -12,42 +15,58 @@ public class ColorFunctions {
     }
 
     public void changeBackground(String color) {
+        StyledDocument doc = frame.textPane.getStyledDocument();  // Change this line
+
         switch (color) {
-            case "Black" -> frame.textArea.setBackground(Color.BLACK);
-            case "White" -> frame.textArea.setBackground(Color.WHITE);
-            case "Blue" -> frame.textArea.setBackground(Color.BLUE);
-            case "Red" -> frame.textArea.setBackground(Color.RED);
-            case "Custom" -> changeCustomBackgroundColor();
+            case "Black" -> setBackgroundColor(doc, Color.BLACK);
+            case "White" -> setBackgroundColor(doc, Color.WHITE);
+            case "Blue" -> setBackgroundColor(doc, Color.BLUE);
+            case "Red" -> setBackgroundColor(doc, Color.RED);
+            case "Custom" -> changeCustomBackgroundColor(doc);
         }
     }
 
     public void changeForeground(String color) {
+        StyledDocument doc = frame.textPane.getStyledDocument();  // Change this line
+
         switch (color) {
-            case "fBlack" -> frame.textArea.setForeground(Color.BLACK);
-            case "fWhite" -> frame.textArea.setForeground(Color.WHITE);
-            case "fBlue" -> frame.textArea.setForeground(Color.BLUE);
-            case "fRed" -> frame.textArea.setForeground(Color.RED);
-            case "fCustom" -> changeCustomForegroundColor();
+            case "fBlack" -> setForegroundColor(doc, Color.BLACK);
+            case "fWhite" -> setForegroundColor(doc, Color.WHITE);
+            case "fBlue" -> setForegroundColor(doc, Color.BLUE);
+            case "fRed" -> setForegroundColor(doc, Color.RED);
+            case "fCustom" -> changeCustomForegroundColor(doc);
         }
     }
 
-    private void changeCustomBackgroundColor() {
+    private void setBackgroundColor(StyledDocument doc, Color color) {
+        frame.textPane.setBackground(color);
+        doc.putProperty(StyleConstants.Background, color);
+    }
+
+    private void setForegroundColor(StyledDocument doc, Color color) {
+        Style style = doc.addStyle("foreground", null);
+        StyleConstants.setForeground(style, color);
+        doc.setCharacterAttributes(0, doc.getLength(), style, false);
+    }
+
+
+    private void changeCustomBackgroundColor(StyledDocument doc) {
         Color chosenColor = chooseCustomColor();
         if (chosenColor != null) {
-            frame.textArea.setBackground(chosenColor);
+            setBackgroundColor(doc, chosenColor);
         }
     }
 
-    private void changeCustomForegroundColor() {
+    private void changeCustomForegroundColor(StyledDocument doc) {
         Color chosenColor = chooseCustomColor();
         if (chosenColor != null) {
-            frame.textArea.setForeground(chosenColor);
+            setForegroundColor(doc, chosenColor);
         }
     }
+
 
     private Color chooseCustomColor() {
         Color initialColor = Color.BLACK; // Default initial color
         return JColorChooser.showDialog(frame, "Choose Custom Color", initialColor);
     }
-
 }
