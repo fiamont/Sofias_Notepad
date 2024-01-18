@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="Sofias_Notepad:jar">
-    <output-path>$USER_HOME$/Desktop</output-path>
+    <output-path>$PROJECT_DIR$/out/artifacts/Sofias_Notepad_jar</output-path>
     <root id="archive" name="Sofias_Notepad.jar">
       <element id="module-output" name="Sofias_Notepad" />
     </root>
