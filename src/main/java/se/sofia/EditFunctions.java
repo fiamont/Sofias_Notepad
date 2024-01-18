@@ -9,10 +9,10 @@ public class EditFunctions {
     }
 
     public void makeUndo() {
-        System.out.println("UNDO");
+        frame.undoManager.undo();
     }
 
     public void makeRedo() {
-        System.out.println("REDO");
+        frame.undoManager.redo();
     }
 }

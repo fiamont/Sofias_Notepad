@@ -1,6 +1,9 @@
 package se.sofia;
 
 import javax.swing.*;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.undo.UndoManager;
 
 public class MyFrame extends JFrame {
     JTextArea textArea;
@@ -11,7 +14,7 @@ public class MyFrame extends JFrame {
     FormatFunctions formatFunctions = new FormatFunctions(this);
     ColorFunctions colorFunctions = new ColorFunctions(this);
     JMenuBar menuBar = new MenuBar(this, fileFunctions, editFunctions, formatFunctions, colorFunctions).createMenuBar();
-
+    UndoManager undoManager = new UndoManager();
     public MyFrame() {
         createWindow();
         setJMenuBar(menuBar);
@@ -31,6 +34,10 @@ public class MyFrame extends JFrame {
 
     public void createTextArea() {
         textArea = new JTextArea();
+
+        textArea.getDocument().addUndoableEditListener(
+                e -> undoManager.addEdit(e.getEdit())
+        );
         scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         textArea.setLineWrap(true);
